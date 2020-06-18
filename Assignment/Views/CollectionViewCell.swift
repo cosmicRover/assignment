@@ -10,12 +10,20 @@ import Foundation
 import UIKit
 
 class ImageCell: UICollectionViewCell {
-    var imageData: ImageDataModel? {
+    var downloadedData: ImageDataModel? {
         didSet {
-            // set data to this computer property
-            // cellView.image = imageData.image download image here
-            guard let imageData = imageData else { return }
-            cellView.image = #imageLiteral(resourceName: "bob.jpg")
+            guard let imageData = downloadedData else { return }
+            let url: URL = URL(string: imageData.medUrl)!
+            ImageDownloader.downloadImage(with: url) { result in
+                switch result {
+                case let .failure(error):
+                    print(error.localizedDescription)
+                    return
+                case let .success(image):
+                    self.cellView.image = image
+                    return
+                }
+            }
         }
     }
 
@@ -24,6 +32,9 @@ class ImageCell: UICollectionViewCell {
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
+        iv.layer.cornerRadius = 12.0
+        iv.layer.borderWidth = 2.0
+        iv.layer.borderColor = UIColor(red: 81 / 255, green: 91 / 255, blue: 107 / 255, alpha: 1).cgColor
         return iv
     }()
 

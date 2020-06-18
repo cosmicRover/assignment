@@ -22,8 +22,11 @@ extension ImageQueryViewController: UISearchBarDelegate {
     }
 
     func searchBar(_: UISearchBar, textDidChange searchText: String) {
-        // Invike view model for network call here
-        print(searchText)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.imageQueryViewModel.queryApiForImage(for: searchText)
+            print(searchText)
+            self.collectionView.reloadData()
+        }
     }
 
     func displaySearchButton(shouldDisplay: Bool) {

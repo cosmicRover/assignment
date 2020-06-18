@@ -17,19 +17,29 @@ extension ImageQueryViewController: UICollectionViewDelegateFlowLayout, UICollec
     }
 
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        return 30
+        return imageQueryViewModel.getImages.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ImageCell
-        // dummy data
-        cell.imageData = ImageDataModel(id: 1, width: 1, height: 1, largeUrl: "", mediumUrl: "dd", smallUrl: "dd")
+
+        guard imageQueryViewModel.getImages.count > 0 else { return cell }
+
+        cell.downloadedData = imageQueryViewModel.getImages[indexPath.row]
         return cell
     }
 
+    func collectionView(_: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = DetailViewController()
+        vc.imageUrl = imageQueryViewModel.getImages[indexPath.row].largeUrl
+        present(vc, animated: true, completion: nil)
+    }
+
     func collectionView(_: UICollectionView, willDisplay _: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == 29 {
-            print("End of items") //call more items here
+        let count = imageQueryViewModel.getImages.count
+        if indexPath.row == count - 1, count >= 30 {
+            print("end of the collectionView")
+            imageQueryViewModel.queryApiForAdditionalImages()
         }
     }
 }

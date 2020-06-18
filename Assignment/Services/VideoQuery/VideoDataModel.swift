@@ -1,5 +1,5 @@
 //
-//  Image.swift
+//  Video.swift
 //  Assignment
 //
 //  Created by Joy Paul on 6/16/20.
@@ -8,13 +8,13 @@
 
 import Foundation
 
-struct ImageDataModel {
+struct VideoDataModel {
     let id: Int
     let width: Int
     let height: Int
-    let largeUrl: String
-    let mediumUrl: String
-    let smallUrl: String
+    let hdUrl: URL
+    let sdUrl: URL
+    let videoImageUrl: URL
 
-    // MARK: - Convert JSON to data models
+    // MARK: - Convert JSON to data model
 }
